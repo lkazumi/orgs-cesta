@@ -16,12 +16,29 @@ export default function App() {
     MontserratBold: Montserrat_700Bold,
   });
 
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fonteCarregada) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fonteCarregada]);
+
   if (!fonteCarregada) {
-    return <AppLoading />;
+    return null;
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <StatusBar />
       <Cesta {...mock} />
     </SafeAreaView>
