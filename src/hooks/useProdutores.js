@@ -1,23 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import { carregaProdutores } from "../servicos/carregaDados";
+import { carregaProdutores } from '../servicos/carregaDados';
 
-export default function useProdutores() {
-
-    const [titulo, setTitulo] = useState("");
+export default function useProdutores(melhoresProdutores) {
     const [lista, setLista] = useState([]);
 
     useEffect(() => {
         const retorno = carregaProdutores();
-
-        // ordena lista por distancia
         retorno.lista.sort(
-          (produtor1, produtor2) => produtor1.distancia - produtor2.distancia,
-      );
+            (produtor1, produtor2) => produtor1.distancia - produtor2.distancia,
+        );
+        let novaLista = retorno.lista;
+        
+        if (melhoresProdutores) {
+            novaLista = novaLista.filter(
+                (produtor) => produtor.estrelas > 3
+            );
+        }
+        setLista(novaLista);
+    }, []);
 
-        setTitulo(retorno.titulo);
-        setLista(retorno.lista);
-      }, []);
-
-    return [titulo, lista];
+    return lista;
 }
