@@ -24,7 +24,7 @@ const navigation = useNavigation();
     data={lista}
     renderItem={
       ({ item }) => <Produtor {...item} aoPressionar={() => {
-        navigation.navigate('Produtor');
+        navigation.navigate('Produtor', item);
       }} />
     }
     keyExtractor={({ nome }) => nome}
